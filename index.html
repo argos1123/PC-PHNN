@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Conference Paper</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['\\[', '\\]']],
+                tags: 'ams'  // enables equation numbering
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -39,7 +49,66 @@
 
         <h2>Method</h2>
 
-        <img src="figures/figure1.png" alt="Overview of our method">
+        <h3>Pitch controlled oscillatory systems</h3>
+
+        <h4>General Hamiltonian function</h4>
+
+        <p>
+            An oscillatory system prototype can be modeled as a general RLC circuit following
+            Eq.&nbsp;(<a href="#eq-phs-formulation">1</a>), with Hamiltonian
+        </p>
+        
+        \[
+        H(\bm{x}) = \frac{p^2}{2L} + \frac{1}{2C(d)}\left(q^2 + k q^4\right)
+        \tag{2}\label{eq:musical-instrument-hamiltonian}
+        \]
+
+        <p>
+            where \(\bm{x} = [d, q, p]\) denotes the system's state, \(L\) the inductance,
+            \(C(d) = (\epsilon A)/d\) the capacitance (\(\epsilon = \epsilon_r \epsilon_0\)
+            is the permittivity of the material, \(A\) the area of the plates and \(d\)
+            the distance between them). The coefficient \(k \geq 0\) controls the
+            <em>geometrical nonlinearities</em>. In this model, controlling \(d\) enables
+            changing the natural oscillation frequency \(f\), which are related by:
+        </p>
+        
+        \[
+        f(d) = \frac{1}{2\pi}\sqrt{\frac{1}{LC(d)}}
+        \iff
+        d(f) = 4\pi^2 f^2 \epsilon A L
+        \tag{3}\label{eq:f-d}
+        \]
+
+        <h4>Considered systems</h4>
+
+        <div class="media-row">
+            <figure class="media-item">
+                <img src="figures/sound1.png" alt="Description of sound example 1">
+                <audio controls>
+                    <source src="audio/sound1.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <figcaption>System I</figcaption>
+            </figure>
+
+            <figure class="media-item">
+                <img src="figures/sound2.png" alt="Description of sound example 2">
+                <audio controls>
+                    <source src="audio/sound2.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <figcaption>System II</figcaption>
+            </figure>
+
+            <figure class="media-item">
+                <img src="figures/sound3.png" alt="Description of sound example 3">
+                <audio controls>
+                    <source src="audio/sound3.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <figcaption>System III</figcaption>
+            </figure>
+        </div>
 
         <h2>Results</h2>
 

@@ -34,3 +34,37 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+
+.media-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.media-item {
+    flex: 1 1 250px;
+    max-width: 300px;
+    margin: 0;
+    text-align: center;
+}
+
+.media-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.media-item audio {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.media-item figcaption {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.3rem;
+}
