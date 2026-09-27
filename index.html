@@ -59,17 +59,17 @@
         </p>
         
         \[
-        H(\bm{x}) = \frac{p^2}{2L} + \frac{1}{2C(d)}\left(q^2 + k q^4\right)
+        H(\mathbf{x}) = \frac{p^2}{2L} + \frac{1}{2C(d)}\left(q^2 + k q^4\right)
         \tag{2}\label{eq:musical-instrument-hamiltonian}
         \]
 
         <p>
-            where \(\bm{x} = [d, q, p]\) denotes the system's state, \(L\) the inductance,
-            \(C(d) = (\epsilon A)/d\) the capacitance (\(\epsilon = \epsilon_r \epsilon_0\)
-            is the permittivity of the material, \(A\) the area of the plates and \(d\)
-            the distance between them). The coefficient \(k \geq 0\) controls the
-            <em>geometrical nonlinearities</em>. In this model, controlling \(d\) enables
-            changing the natural oscillation frequency \(f\), which are related by:
+            where $\mathbf{x} = [d, q, p]$ denotes the system's state, $L$ the inductance,
+            $C(d)$ = $\epsilon A/d$ the capacitance $\epsilon = \epsilon_r \epsilon_0$
+            is the permittivity of the material, $A$ the area of the plates and $d$
+            the distance between them). The coefficient $k\geq 0$ controls the
+            <em>geometrical nonlinearities</em>. In this model, controlling $d$ enables
+            changing the natural oscillation frequency $f$, which are related by:
         </p>
         
         \[
@@ -80,6 +80,99 @@
         \]
 
         <h4>Considered systems</h4>
+
+        <p>
+            We consider two free oscillating and one self-sustained oscillating systems.
+            Table&nbsp;<a href="#tab-PH-objects">1</a> summarizes how
+            $H(\mathbf{x})$, $\mathbf{J}(\mathbf{x}, \mathbf{u})$ and $\mathbf{R}(\mathbf{x}, \mathbf{u})$
+            differ in each case. In the case of the self-sustained system, we consider a
+            nonlinear dissipation function such that the system is able to self-oscillate
+            (see&nbsp;<a href="#ref-linares2026controlled">[1]</a> for further details).
+        </p>
+
+        <figure class="table-wrapper" id=""tab-PH-objects>
+            <table class="phs-table">
+                <tr>
+                    <th rowspan="2">Object</th>
+                    <th colspan="3">Oscillatory system</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Free oscillating</th>
+                    <th>Self-sustained</th>
+                </tr>
+                <tr>
+                    <td>System</td>
+                    <td>$\mathbb{I}$</td>
+                    <td>$\mathbb{II}$</td>
+                    <td>$\mathbb{III}$</td>
+                </tr>
+                <tr>
+                    <td>$H(\mathbf{x})$</td>
+                    <td colspan="3">
+                        $H(\mathbf{x}) = \frac{p^2}{2L} + \frac{1}{2C(d)}\left(q^2 + k q^4\right)$
+                    </td>
+                </tr>
+                <tr>
+                    <td>$k$</td>
+                    <td>0</td>
+                    <td>$>0$</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>$\mathbf{J}(\mathbf{x}, \mathbf{u})$</td>
+                    <td colspan="2">
+                        \[
+                        \begin{bmatrix}
+                            0 & 0 & 0 & 0 & 1 \\
+                            0 & 0 & 1 & 0 & 0 \\
+                            0 & -1 & 0 & -1 & 0 \\
+                            0 & 0 & 1 & 0 & 0 \\
+                            -1 & 0 & 0 & 0 & 0
+                        \end{bmatrix}
+                        \]
+                    </td>
+                    <td>
+                        \[
+                        \begin{bmatrix}
+                            0 & 0 & 0 & 0 & 1 \\
+                            0 & 0 & 1 & 0 & 0 \\
+                            0 & -1 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0 \\
+                            -1 & 0 & 0 & 0 & 0
+                        \end{bmatrix}
+                        \]
+                    </td>
+                </tr>
+                <tr>
+                    <td>$\mathbf{R}(\mathbf{x}, \mathbf{u})$</td>
+                    <td colspan="2">
+                        \[
+                        \alpha
+                        \begin{bmatrix}
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 1 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0
+                        \end{bmatrix}
+                        \]
+                    </td>
+                    <td>
+                        \[
+                        \Gamma(\mathbf{x}, \mathbf{u})
+                        \begin{bmatrix}
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 1 & 1 & 0 \\
+                            0 & 0 & 1 & 1 & 0 \\
+                            0 & 0 & 0 & 0 & 0
+                        \end{bmatrix}
+                        \]
+                    </td>
+                </tr>
+            </table>
+            <figcaption><strong>Table 1.</strong> PHS formulations of our oscillatory systems.</figcaption>
+        </figure>
 
         <div class="media-row">
             <figure class="media-item">
@@ -126,6 +219,11 @@
   year={2026}
 }
         </pre>
+        <ol class="references">
+            <li id="ref-linares2026controlled">
+                J. Linares et al., "Title of the reference," <em>Journal/Conference Name</em>, 2026.
+            </li>
+        </ol>
     </main>
 </body>
 </html>

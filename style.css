@@ -68,3 +68,42 @@ img {
     color: #555;
     margin-top: 0.3rem;
 }
+
+.table-wrapper {
+    margin: 2rem auto;
+    text-align: center;
+    overflow-x: auto;
+}
+
+.phs-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 0.85em; /* mirrors \scalebox{0.85} */
+}
+
+.phs-table th,
+.phs-table td {
+    border: 1px solid #333;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.phs-table th {
+    font-weight: normal; /* LaTeX table headers weren't bold */
+}
+
+.table-wrapper figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+}
+
+.table-wrapper figcaption strong {
+    font-weight: 600;
+}
