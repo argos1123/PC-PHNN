@@ -47,6 +47,45 @@
             musical oscillators with explicit pitch control.
         </p>
 
+        <h2>Context</h2>
+
+        <h3>Port-Hamiltonian systems</h3>
+
+        <p>
+            Port-Hamiltonian formalism&nbsp;<a href="#ref-maschke1992">[1]</a>-<a href="#ref-van2014port">[2]</a> generalizes Hamiltonian mechanics to multi-physics open systems by explicitly modeling energy exchange with the 
+            environment through ports (inputs/outputs) and dissipation. In this work, the considered the input-state-output formulation with feedthrough&nbsp;<a href="#ref-van2002l2">[3]</a>:
+            \begin{equation}
+                \begin{bmatrix}
+                    \dot{\mathbf{x}}  \\ \mathbf{y}
+                \end{bmatrix}=(\mathbf{J}(\mathbf{x},\mathbf{u})-\mathbf{R}(\mathbf{x},\mathbf{u}))\begin{bmatrix}
+                    \nabla H(\mathbf{x}) \\ \mathbf{u}
+                \end{bmatrix},
+                \label{eq:PHS-formulation}
+            \end{equation}
+            where $\mathbf{x}\in\mathcal{X}\subset\mathbb{R}^{n_x}$ is the state of the system with an 
+            associated Hamiltonian $H:\mathcal{X}\rightarrow\mathbb{R}$ and $\mathbf{u},\mathbf{y}\in\mathbb{R}^{n_u}$ 
+            are the input and output of the system, respectively. Additionally, the interconnection matrix $\mathbf{J}(\mathbf{x},\mathbf{u})$ and the dissipation matrix $\mathbf{R}(\mathbf{x},\mathbf{u})\in\mathbb{R}^{(n_x+n_u)\times(n_x+n_u)}$ 
+            satisfy $\mathbf{J}=-\mathbf{J}^{T}$ (conservative interconnection) and $\mathbf{R}=\mathbf{R}^{T}\succeq0$ (passivity).
+
+        </p>
+
+        <h3>Port-Hamiltonian Neural Networks (PHNNs)</h3>
+
+        <p>
+            A port-Hamiltonian neural network (PHNN) can implement in its architecture many port-Hamiltonian formulations&nbsp;<a href="#ref-linares2026controlled">[3]</a>. 
+            In this work, we consider the class of PHNNs that parameterizes the right-hand side of \eqref{eq:PHS-formulation}, modeling $\mathbf{J}(\mathbf{x},\mathbf{u})$, $\mathbf{R}(\mathbf{x},\mathbf{u})$ and $H(\mathbf{x})$ with distinct neural networks. This leads to
+            \begin{equation}
+            \label{eq:dynamics-phnn}
+                \begin{bmatrix}
+                    \dot{\mathbf{x}}_{\theta} \\
+                    \mathbf{y}_{\theta}
+                \end{bmatrix}=(\mathbf{J}_{\theta}(\mathbf{x},\mathbf{u})-\mathbf{R}_{\theta}(\mathbf{x},\mathbf{u}))\begin{bmatrix}
+                    \nabla H_{\theta}(\mathbf{x}) \\ \mathbf{u}
+                \end{bmatrix},
+            \end{equation}
+            which describes the dynamics of the PHNN. 
+        </p>
+
         <h2>Method</h2>
 
         <h3>Pitch controlled oscillatory systems</h3>
@@ -55,7 +94,7 @@
 
         <p>
             An oscillatory system prototype can be modeled as a general RLC circuit following
-            Eq.&nbsp;(<a href="#eq-phs-formulation">1</a>), with Hamiltonian
+            Eq.\eqref{eq:PHS-formulation}, with Hamiltonian
         </p>
         
         \[
@@ -87,10 +126,10 @@
             $H(\mathbf{x})$, $\mathbf{J}(\mathbf{x}, \mathbf{u})$ and $\mathbf{R}(\mathbf{x}, \mathbf{u})$
             differ in each case. In the case of the self-sustained system, we consider a
             nonlinear dissipation function such that the system is able to self-oscillate
-            (see&nbsp;<a href="#ref-linares2026controlled">[1]</a> for further details).
+            (see&nbsp;<a href="#ref-linares2026controlled">[3]</a> for further details).
         </p>
 
-        <figure class="table-wrapper" id=""tab-PH-objects>
+        <figure class="table-wrapper" id="tab-PH-objects">
             <table class="phs-table">
                 <tr>
                     <th rowspan="2">Object</th>
@@ -123,22 +162,22 @@
                     <td colspan="2">
                         \[
                         \begin{bmatrix}
-                            0 & 0 & 0 & 0 & 1 \\
+                            0 & 0 & 0 & 1 & 0 \\
                             0 & 0 & 1 & 0 & 0 \\
-                            0 & -1 & 0 & -1 & 0 \\
-                            0 & 0 & 1 & 0 & 0 \\
-                            -1 & 0 & 0 & 0 & 0
+                            0 & -1 & 0 & 0 & -1 \\
+                            -1 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 1 & 0 & 0
                         \end{bmatrix}
                         \]
                     </td>
                     <td>
                         \[
                         \begin{bmatrix}
-                            0 & 0 & 0 & 0 & 1 \\
+                            0 & 0 & 0 & 1 & 0 \\
                             0 & 0 & 1 & 0 & 0 \\
                             0 & -1 & 0 & 0 & 0 \\
-                            0 & 0 & 0 & 0 & 0 \\
-                            -1 & 0 & 0 & 0 & 0
+                            -1 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 0 & 0
                         \end{bmatrix}
                         \]
                     </td>
@@ -163,9 +202,9 @@
                         \begin{bmatrix}
                             0 & 0 & 0 & 0 & 0 \\
                             0 & 0 & 0 & 0 & 0 \\
-                            0 & 0 & 1 & 1 & 0 \\
-                            0 & 0 & 1 & 1 & 0 \\
-                            0 & 0 & 0 & 0 & 0
+                            0 & 0 & 1 & 0 & 1 \\
+                            0 & 0 & 0 & 0 & 0 \\
+                            0 & 0 & 1 & 0 & 1
                         \end{bmatrix}
                         \]
                     </td>
@@ -203,13 +242,270 @@
             </figure>
         </div>
 
-        <h2>Results</h2>
+        <h4>Control design</h4>
+        A control input $\mathbf{u}=[u_1,u_2]$ acts on the system. The first component, $u_1$, 
+        is designed to modulate the natural oscillation frequency, while the role of $u_2$ 
+        depends on the considered system: for the free oscillators, $u_2$ controls the volume, 
+        whereas for the self-sustained oscillator, it determines whether self-oscillations 
+        emerge or not. 
 
         <p>
-            We evaluate our approach on ...
+            &emsp;<b>Pitch control</b> ($u_1$):
+            Pitch is controlled by ramping $d$ linearly from its current value to a new 
+            target $d+\delta d$ over a time interval $\delta t$. The control $u_1$ is 
+            set to the constant slope $\delta d/\delta t$ during the transition, and to 
+            zero otherwise. Thus, $d$ remains constant between notes and transitions 
+            smoothly to its new value at each onset.
+        </p>
+            
+        <p>
+            Note that this control modifies the energy of the system when applied. Indeed, if $\mathbf{R}=\mathbf{0}$ and $u_2=0$,
+            \[
+            \frac{dH}{dt}=\nabla H(\mathbf{x})^T\dot{\mathbf{x}}=\nabla H(\mathbf{x})^T
+            \begin{bmatrix}
+                0 & 0 & 0 & 1 & 0 \\
+                0 & 0 & 1 & 0 & 0 \\
+                0 & -1 & 0 & 0 & -1
+            \end{bmatrix}
+            \begin{bmatrix}\nabla H_d(\mathbf{x}) \\ \nabla H_q(\mathbf{x}) \\ \nabla H_p(\mathbf{x}) \\ u_1 \\ u_2 \end{bmatrix}=\nabla H_d(\mathbf{x})\cdot u_1=\frac{(q^2+kq^4)\epsilon A}{2C(d)^2d^2}u_1,
+            \label{eq: pitch-shift-energy-flow}
+            \]
+            so that the stored power has the same sign of $u_1$. Increasing $d$ ($u_1>0$) injects 
+            energy into the system, whereas decreasing it ($u_1<0$) removes energy.
         </p>
 
-        <h2>Citation</h2>
+        <p> 
+            &emsp;<b>Volume control</b> ($u_2$).
+                <ul>
+                    <li>
+                        <i>Free oscillators</i>: $u_2$ acts as an energy regulator, 
+                        driving the system's energy towards a reference level $H_{\text{ref}}$, compensating for both the 
+                        energy dissipated during oscillations and the energy injected or extracted during the pitch-control 
+                        ramp $u_1$. Mathematically, this control is introduced as 
+                        \begin{equation}
+                            u_2(\mathbf{x},t)=\frac{\frac{1}{\tau}(H(\mathbf{x})-H_{\text{ref}})-\alpha (\nabla_pH(\mathbf{x}))^2+\nabla_dH(\mathbf{x})\cdot u_1(t)}{\nabla_pH(\mathbf{x})},
+                            \label{eq:control-volume-free-oscillations}
+                        \end{equation}
+                        The equation above can be derived from the energy balance 
+                        \[
+                            \dot{H}=\nabla_dH(\mathbf{x})\dot{d}+\nabla_qH(\mathbf{x})\dot{q}+\nabla_pH(\mathbf{x})\dot{p}
+                            =\nabla_dH(\mathbf{x})\cdot u_1-\alpha (\nabla_pH(\mathbf{x}))^2-\nabla_pH(\mathbf{x})\cdot u_2,
+                        \]
+                        where $u_1$ injects/extracts power to change $d$ and there is a fixed energy dissipation due to $\alpha>0$. If we impose exponential convergence of $e=H(\mathbf{x})-H_{\text{ref}}$, so that $\dot{e}=-\frac{1}{\gamma}e$, we obtain
+                        \[
+                        -\frac{H(\mathbf{x})-H_{\text{ref}}}{\gamma}=\nabla_dH(\mathbf{x})\cdot u_1-\alpha (\nabla_pH(\mathbf{x}))^2+\nabla_pH(\mathbf{x})u_2,
+                        \]
+                        from where \eqref{eq:control-volume-free-oscillations} can be derived.
+                    </li>
+                    <li>
+                        <i>Self-sustained oscillators</i>: $u_2$ controls the emergence and maintenance of self-oscillations.
+                    </li>
+                </ul> 
+            
+        </p>
+
+        <h3>PHNN model</h3>
+
+        <h4>Formulation</h4>
+
+        <p> 
+            We consider a PHNN model \eqref{eq:dynamics-phnn} with the following constrains: $\mathbf{J}_{\theta_J}(\mathbf{x},\mathbf{u})$ 
+            is enforced to be skew-symmetric, parameterizing a strictly upper-triangular matrix $\mathbf{K}_{\theta_K}(\mathbf{x},\mathbf{u})$ and imposing 
+            \[
+            \mathbf{J}_{\theta_J}(\mathbf{x},\mathbf{u})=\mathbf{K}_{\theta_K}(\mathbf{x},\mathbf{u})-\mathbf{K}_{\theta_K}(\mathbf{x},\mathbf{u})^T;
+            \]
+            $\mathbf{R}_{\theta_R}(\mathbf{x},\mathbf{u})$ is formed using a Cholesky decomposition
+            \[
+            \mathbf{R}_{\theta_R}(\mathbf{x},\mathbf{u})=(\mathbf{L}_{\theta_L}(\mathbf{x},\mathbf{u}))^T \mathbf{L}_{\theta_L}(\mathbf{x},\mathbf{u}),
+            \]
+             which guarantees symmetric and positive semi-definiteness by construction; and, lastly, the Hamiltonian $H_{\theta_H}(\mathbf{x})$ is represented as 
+            \[
+            H_{\theta_H}(\mathbf{x})=\mathbf{q}^2H_{\theta_{H_1}}(\mathbf{x})+\mathbf{p}^2H_{\theta_{H_2}}(\mathbf{x}),
+            \]
+            with $H_{\theta_{H_1}}(\mathbf{x})\geq 0$ and $H_{\theta_{H_2}}(\mathbf{x})\geq 0$, which guarantees $H_{\theta_H}(\mathbf{x})\geq0$ and $H_{\theta_H}(d,0,0)=0$. 
+        </p>
+
+        <h4>Time discretization</h4>
+
+        <p>
+            Let  $\Delta t=1/f_s$ and $f_s$ denote the discretization sampling rate. We avoid modeling $\dot{\mathbf{x}}$ directly, as state derivatives are typically unavailable 
+            in real-world measurements, and instead learn the discrete-time map from $\mathbf{x}_n$ to $\mathbf{x}_{n+1}$. To discretize \eqref{eq:dynamics-phnn}, we follow&nbsp;<a href="#ref-linares2026controlled">[3]</a> and use:           
+            \begin{equation}
+            \frac{\mathbf{x}_{n+1}-\mathbf{x}_n}{\Delta t}=(\mathbf{J}_{\theta_J}(\mathbf{x}_{n+\frac{1}{2}},\mathbf{u}_{n+\frac{1}{2}})-\mathbf{R}_{\theta_R}(\mathbf{x}_{n+\frac{1}{2}},\mathbf{u}_{n+\frac{1}{2}})\begin{bmatrix}
+                    \overline{\nabla}_{\mathbf{x}}H_{\theta}(\mathbf{x}_{n+\frac{1}{2}}) \\ \mathbf{u}_{n+\frac{1}{2}},
+                \end{bmatrix},
+                \label{eq:discretization-dg}
+            \end{equation}
+            where $\mathbf{x}_{n+\frac{1}{2}}=(\mathbf{x}_{n+1}+\mathbf{x}_n)/2$, $\mathbf{u}_{n+\frac{1}{2}}=(\mathbf{u}_{n+1}+\mathbf{u}_n)/2$ and $\overline{\nabla}_{\mathbf{x}}(\cdot)$ denotes the Gonzalez discrete gradient (DG)&nbsp;<a href="#ref-gonzalez1996time">[4]</a>. 
+            This guarantees power-balance preservation during time discretization.
+        </p>
+
+        <h4>Training loss</h4>
+
+        <p>
+            A natural way to train a PHNN is to consider the discrepancy between the predicted and the ground-truth next state
+            \begin{equation}
+                \mathcal{L}_{\text{disc}}=\|\hat{\mathbf{x}}_{n+1}-\mathbf{x}_{n+1}\|_1.
+            \end{equation}
+            However, since $\hat{\mathbf{x}}_{n+1}$ is obtained implicitly through the DG update, computing it during training would require solving the associated root-finding problem at every step and backpropagating 
+            through its iterations, which is very expensive. To avoid this, we exploit the inverse-explicit property&nbsp;<a href="#ref-celledoni2025inverseexplicit">[5]</a> 
+            of the DG: since $(\mathbf{x}_n,\mathbf{x}_{n+1},\mathbf{u}_n,\mathbf{u}_{n+1})$ are known from data at training time, $\mathbf{f}_{\theta,DG}$ can be evaluated explicitly. This allows us to instead train on the residual of the discretized dynamics, 
+            \begin{equation}
+                \mathcal{L}_{\text{DG}}=\left\|\frac{\mathbf{x}_{n+1}-\mathbf{x}_n}{\Delta t}-\mathbf{f}_{\theta,DG} \right\|_1
+            \end{equation}
+            without requiring an iterative solver during training. The root-finding algorithm is only needed at inference time, when generating trajectories. Similarly to&nbsp;<a href="#ref-cherifi2026iso-phnn">[6]</a> , we include the output loss on the training, defining the following PHNN loss,
+            \[\mathcal{L}_{\text{PHNN}} = \mathcal{L}_{\text{DG}}+ \left\| \mathbf{y}_{n+\frac{1}{2}} - \mathbf{y}_{\theta,n+\frac{1}{2}} \right\|_1\]
+            where $\mathbf{y}_{n+\frac{1}{2}}$ and $\mathbf{y}_{\theta,n+\frac{1}{2}}$ denote the ground-truth and predicted outputs, respectively, evaluated at the midpoint.
+        </p>
+
+        <h2>Experiments</h2>
+        <h3>Data generation</h3>
+        For each oscillatory systems, the dataset consists of $N$ simulated trajectories of duration 
+        $D$. All trajectories start at $\mathbf{x}_0\!=\![\epsilon A/C_0,0,p_0]$, where $C_0\!=\!4\pi^2Lf_0^2$, $f_0\sim\mathcal{U}(f_{\text{min}},f_{\text{max}})$, and $p_0\!=\!\sqrt{2L}$, so that $H(\mathbf{x}_0)\!=\!1J$. For pitch control, we then sample a sequence of 
+        $ n_{\text{notes}}\!\sim\!\mathcal{U}(n_{\text{min}},n_{\text{max}})$, each note having a frequency $f_{note}\!\sim\! \operatorname{LogUniform}(f_{\min},f_{\max})$ and a duration $d_{note}\! \sim\!\mathcal{U}(2\delta t,D/n_{\text{notes}})$. 
+        Finally, trajectories are computed discretizing \eqref{eq:PHS-formulation} using DG. 
+
+        <figure class="table-wrapper" id="tab-dataset-params">
+            <table class="phs-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Train</th>
+                  <th>Test</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Number of trajectories, $N$</td>
+                  <td>64</td>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <td>Simulation duration, $T$</td>
+                  <td>2 s</td>
+                  <td>20 s</td>
+                </tr>
+                <tr>
+                  <td>Min/max number of notes, $[n_{\text{min}},n_{\text{max}}]$</td>
+                  <td>[4, 8]</td>
+                  <td>[20, 40]</td>
+                </tr>
+                <tr>
+                  <td>Min/max natural frequency, $[f_{\text{min}},f_{\text{max}}]$</td>
+                  <td colspan="2">[140, 1000]&nbsp;Hz</td>
+                </tr>
+                <tr>
+                  <td>Transition time, $\delta t$</td>
+                  <td colspan="2">0.1&nbsp;s</td>
+                </tr>
+                <tr>
+                  <td>Min/max note duration, $[d_{\text{min}},d_{\text{max}}]$</td>
+                  <td>$[2\delta t,\,D/n_{\text{notes}}]$&nbsp;s</td>
+                  <td>$[2\delta t,\,1]$&nbsp;s</td>
+                </tr>
+                <tr>
+                  <td>$(L,\epsilon,A)$</td>
+                  <td colspan="2">(0.03&nbsp;H,&nbsp;0.5&nbsp;m<sup>2</sup>,&nbsp;3$\epsilon_0$)</td>
+                </tr>
+                <tr>
+                  <td>Reference energy, $H_{\text{ref}}$</td>
+                  <td colspan="2">1&nbsp;J</td>
+                </tr>
+                <tr>
+                  <td>Sampling rate, $f_s$</td>
+                  <td colspan="2">24&nbsp;kHz</td>
+                </tr>
+                <!--
+                <tr>
+                  <td>Exponential coefficient, $\gamma$</td>
+                  <td colspan="2">$1/f_s$</td>
+                </tr>
+                -->
+              </tbody>
+            </table>
+            <figcaption><strong>Table 2:</strong> Parameters used for training and test dataset generation.</figcaption>
+          </figure>
+
+
+        <h3>Training details</h3>
+
+        <p>
+            We train a PHNN on $\mathcal{L}_{\text{PHNN}}$ with data generated for the systems in Table&nbsp;<a href="#tab-PH-objects">1</a>. 
+            Each subnetwork is an MLP with 3 hidden layers of 100 units each. The PHNN performance is compared with a NODE model 
+            trained on $\mathcal{L}_{\text{disc}}$ in which the state derivative $\dot{\mathbf{x}}$ is approximated directly with an unstructured MLP (3 hidden layers, 200 units), integrated via explicit midpoint Runge-Kutta to match the accuracy order of the DG. Both models were trained for 500k steps (batch size 32, Adam with LR warm-up followed by cosine decay from 1e-3). We report Mean Squared Error (MSE) on predicted state trajectories as the test metric.
+        </p>
+
+        <h2>Results and discussion</h2>
+
+        <p>
+            For each system, we show the long horizon stability and accuracy of 
+            both models for the test trajectories. 
+        </p>    
+        <div class="media-row">
+            <figure class="media-item">
+                <img src="figures/icassp_mass_spring.svg" alt="Description of sound example 1">
+                <figcaption>System I</figcaption>
+            </figure>
+
+            <figure class="media-item">
+                <img src="figures/icassp_duffing.svg" alt="Description of sound example 2">
+                <figcaption>System II</figcaption>
+            </figure>
+
+            <figure class="media-item">
+                <img src="figures/icassp_van_der_pol.svg" alt="Description of sound example 3">
+                <figcaption>System III</figcaption>
+            </figure>
+            <figcaption class="group-caption">
+                <strong>Figure 2:</strong> Long horizon prediction stability and accuracy of NODE and PHNN for each system. <i>Top row</i>: divergence rate, defined as the percentage of test trajectories whose state values reach non-finite vales after a given inference duration. <i>Bottom row</i>: distribution of mean squared error (MSE, log scale) between predicted and ground truth trajectories at each inference duration, shown as boxplots. An asterisk (*) above a boxplot indicates that the reported MSE is computed only over the trajectories that have not yet diverged at that inference duration..
+            </figcaption>
+        </div>
+        <p>
+            In every scenario, NODE exhibits numerically divergent behavior, with 
+            predicted states reaching non-finite values for an increasing number of trajectories as the prediction length increases, 
+            while PHNN predictions never diverge. The rate of diverged trajectories increases with prediction length for NODE, reaching 
+            roughly $45-60\%$ at $20s$ in Systems $\mathbb{I}$ and $\mathbb{III}$ and 10$\%$ in System $\mathbb{II}$. 
+            This indicates that the combination of a PHNN structure and a power-preserving time discretization guarantees long-term stability 
+            compared to an unconstrained NODE, whose predictions are prone to numerical instability over long horizons. 
+            As for the MSE comparison, it should be read carefully: asterisked boxplots indicate that some trajectories diverged. 
+            Despite having more valid trajectories, PHNN accuracy remain stable over time, offering a better stability-accuracy tradeoff. 
+            From a qualitative viewpoint, we also include the spectrogram of the generated wavform, and confirms 
+            that PHNN prediction remains accurate in both frequency and energy.
+            <figure class="figure-group" id="fig-spectrograms">
+                <img class="spec-image" src="figures/comparison_spectrogram.svg" alt="Target (left) and predicted (right) spectrograms">
+            
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <audio controls preload="none">
+                            <source src="audio/reference.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <span>Target</span>
+                    </div>
+            
+                    <div class="audio-item">
+                        <audio controls preload="none">
+                            <source src="audio/prediction.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <span>Predicted</span>
+                    </div>
+                </div>
+            
+                <figcaption class="group-caption">
+                    <strong>Figure 3:</strong> Target (left) and predicted (right) spectrograms of the state $p$ with their corresponding audio for a test trajectory in system $\mathbb{III}$.
+                </figcaption>
+            </figure>
+        </p>
+
+        <h2>Conclusion</h2>
+
+
+        <p>
+            The results confirm that PHNN's structural constraints, preserved at discrete time with the use of a DG method, offer a more stable and reliable long-horizon prediction than a NODE. This robustness, however, comes at a computational cost: the DG method is implicit and slow to converge, limiting its practicality for real-time applications. Future work should therefore explore explicit alternatives that preserve PHNN's stability guarantees without this overhead. Even though this method should still be validated by learning the dynamics directly from real experimental data rather than simulated trajectories alone, this work represents, in itself, a proof of concept for how the PHNN framework can be leveraged to learn general pitch-controlled oscillating systems that behave as minimalistic musical instruments. 
+        </p>
+
+        <!-- <h2>Citation</h2>
 
         <pre>
 @inproceedings{doe2026paper,
@@ -218,10 +514,28 @@
   booktitle={Conference Name},
   year={2026}
 }
-        </pre>
+        </pre> -->
+
+        <h2> References</h2>
+
         <ol class="references">
+            <li id="ref-maschke1992">
+                B.M. Maschke et al., "An intrinsic hamiltonian formulation of network dynamics: non-standard poisson structures and gyrators," <em>Journal of the Franklin Institute</em>, 1992.
+            </li>
+            <li id="ref-van2014port">
+                A. Van Der Schaft et al., "Port-Hamiltonian systems theory: An introductive overview," <em>Foundations and Trends in Systems and Control</em>, 2014.
+            </li>
             <li id="ref-linares2026controlled">
-                J. Linares et al., "Title of the reference," <em>Journal/Conference Name</em>, 2026.
+                M. Linares et al., "Controlled oscillation modelling using port-Hamiltonian neural networks," <em>Physica D: Nonlinear Phenomena</em>, 2026.
+            </li>
+            <li id="ref-gonzalez1996time">
+                O. Gonzalez et al., "Time integration and discrete hamiltonian systems," <em>Journal of Nonlinear Science</em>, 1996.
+            </li>
+            <li id="ref-celledoni2025inverseexplicit">
+                E. Celledoni et al., "Learning dynamical systems from noisy data with inverse-explicit integrators," <em>Physica D: Nonlinear Phenomena</em>, 2025.
+            </li>
+            <li id="ref-cherifi2026iso-phnn">
+                K. Cherifi et al., "Nonlinear port-hamiltonian system identification from input-state-output data (iso-phnn)," <em>Physica D: Nonlinear Phenomena</em>, 2026.
             </li>
         </ol>
     </main>
