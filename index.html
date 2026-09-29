@@ -205,7 +205,7 @@
                             0 & 0 & 1 & 0 & 1 \\
                             0 & 0 & 0 & 0 & 0 \\
                             0 & 0 & 1 & 0 & 1
-                        \end{bmatrix}
+                        \end{bmatrix},~~~~\Gamma(\mathbf{x},\mathbf{u})\geq 0
                         \]
                     </td>
                 </tr>
@@ -298,7 +298,46 @@
                         from where \eqref{eq:control-volume-free-oscillations} can be derived.
                     </li>
                     <li>
-                        <i>Self-sustained oscillators</i>: $u_2$ controls the emergence and maintenance of self-oscillations.
+                        <i>Self-sustained oscillators</i>: $u_2$ controls the emergence and maintenance of self-oscillations. To illustrate it, consider System $\mathbb{III}$ oscillating at a natural frequency $f_0$ with associated $d=d(f_0)$, a constant control $u_2$ 
+                        and $\Gamma(\mathbf{x},\mathbf{u})=\Gamma(w)\geq0,~\forall w$, with $w=\frac{p}{L}+u_2$. 
+                        When no pitch control is applied, the dynamics of this system can be written as 
+                        \[  
+                        \begin{cases}   
+                            \dot{q}=\frac{p}{m} \\
+                            \dot{p}=-\frac{q}{C(d_0)}-\Gamma(w)w
+                        \end{cases}~~~~,
+                        \]
+                        with a unique equilibrium point $(q^{*},p^{*})=\left(-C(d_0)\Gamma(u_2)u_2,0\right)$ and a Jacobian matrix
+                        \[ 
+                        J_{f}(q,p)=\begin{bmatrix} 
+                            0 & \frac{1}{L} \\
+                            -\frac{1}{C(d_0)} & -\frac{1}{L}\left(\Gamma'(w)w+\Gamma(w) \right)
+                        \end{bmatrix}.
+                        \]
+                        We can now show how, for specific values of $u_2$, the system self-oscillates or not. 
+                        To do so, we apply the <i>Poincaré-Bendixson theorem</i>, which only requires the system to have a unique unstable equilibrium point in order for the dynamics to converge to a limit 
+                        cycle. The stability of the equilibrium point depends on the determinant and trace of the Jacobian matrix evaluated at $(q^{*},p^{*})$
+                        \[    
+                        J_f(q^{*},p^{*})=\begin{bmatrix} 
+                        0 & \frac{1}{L} \\
+                        -\frac{1}{C(d_0)} & -\frac{1}{L}\left(\Gamma'(u_2)u_2+\Gamma(u_2) \right)
+                    \end{bmatrix}.
+                        \]
+                        In order for $(q^{*},p^{*})$ to be unstable, both the determinant and trace of $J_f(q^{*},p^{*})$ must be positive. The first condition is direct as 
+                        \[
+                        \text{det}(J_f(q^{*},p^{*}))=\frac{1}{LC(d_0)}>0.
+                        \]
+                        For the second one,
+                        \[
+                        \text{tr}(J_f(q^{*},p^{*}))=-\frac{1}{L}\left(\Gamma'(u_2)u_2+\Gamma(u_2)\right)>0,
+                        \]
+                        which defines the set
+                        \[
+                            \mathcal{U}_{\text{limit-cycle}}=\{u_2\in\mathbb{R},s.t.~ \Gamma'(u_2)u_2+\Gamma(u_2)<0 \} 
+                        \]
+                        of constant controls $u_2$ for which self-oscillations emerge. For values outside of $\mathcal{U}_{\text{limit-cycle}}$, the equilibrium point is stable, with trajectories 
+                        converging towards $(q^{*},p^{*})$. In the theory of dynamical systems, the lost of stability induced by a change in a control parameter (in our case $u_2$) is referred to 
+                        as a <i>Hopf bifurcation</i>.
                     </li>
                 </ul> 
             
