@@ -358,6 +358,43 @@
             where $\mathbf{y}_{n+\frac{1}{2}}$ and $\mathbf{y}_{\theta,n+\frac{1}{2}}$ denote the ground-truth and predicted outputs, respectively, evaluated at the midpoint.
         </p>
 
+        <h3>Normalization</h3>
+
+        <p>
+            Prior to training, we normalize the state and control variables following a similar procedure to the one described in&nbsp;<a href="#ref-elmessaoudi2026iso-phnn">[7]</a>. 
+            We define $\mathbf{D}$ and $\mathbf{S}_u$ as diagonal matrices 
+            \[ 
+            \mathbf{D}=\begin{bmatrix}
+            \text{std}(x_1) & 0 & \cdots & 0 \\ 
+            0 & \text{std}(x_2) & \ddots & \vdots \\
+            \vdots & \ddots & \ddots & 0 \\
+            0 & \cdots & 0 & \text{std}(x_{n_x})
+            \end{bmatrix},~~~~~~~
+            \mathbf{S}_u=\begin{bmatrix}
+            \text{std}(u_1) & 0 & \cdots & 0 \\ 
+            0 & \text{std}(u_2) & \ddots & \vdots \\
+            \vdots & \ddots & \ddots & 0 \\
+            0 & \cdots & 0 & \text{std}(u_{n_u})
+            \end{bmatrix}
+            \]
+            
+            whose entries are the componentwise empirical standard deviations of the training states and inputs, respectively; and we set 
+            \[
+            \tilde{\mathbf{x}}=\mathbf{D}^{-1}\mathbf{x},~~~~~~~\tilde{\mathbf{u}}=\mathbf{D}_u^{-1}\mathbf{u}.
+            \] 
+            The time variable $t$ is normalized as 
+            \[\Delta\tilde{t}=\frac{\Delta t}{\tau},\] 
+            where the time scale $\tau$ is selected so that 
+            \[\mathbf{\xi}=\frac{\tilde{\mathbf{x}}_{n+1}^{\text{data}}-\tilde{\mathbf{x}}_n^{\text{data}}}{\Delta \tilde{t}}\] 
+            has unit overall standard deviation, with $\tilde{\mathbf{x}}_n^{\text{data}}$ denoting the normalized state at time step $n$ in the dataset. This leads to
+            \[ \text{std}(\mathbf{\xi})=\text{std}\left(\frac{\tilde{\mathbf{x}}_{n+1}^{\text{data}}-\tilde{\mathbf{x}}_n^{\text{data}}}{\Delta \tilde{t}}\right)=1 \longleftrightarrow \tau=\frac{1}{\text{std}\left(\frac{\tilde{\mathbf{x}}_{n+1}^{\text{data}}-\tilde{\mathbf{x}}_n^{\text{data}}}{\Delta t}\right)}. \] 
+            Lastly, the output is normalized as 
+            \[\tilde{\mathbf{ }y}=\tau\mathbf{S}_u\mathbf{y}.\]
+            This follows from requiring that the energy exchanged through the external port be the same in the original and normalized variables $\tilde{u}^T\tilde{y}\cdot \Delta\tilde{t}=u^Ty\cdot \Delta t$.
+            All three normalization quantities ($\mathbf{D},\mathbf{S}_u,\tau$) 
+            are estimated on the training split only and are later reused for the test. The trajectories are inferred auto-regressively with normalized space and time and then converted to the original one via $\mathbf{x}=\mathbf{D}\tilde{\mathbf{x}}$.
+        </p>
+
         <h2>Experiments</h2>
         <h3>Data generation</h3>
         For each oscillatory systems, the dataset consists of $N$ simulated trajectories of duration 
@@ -536,6 +573,9 @@
             </li>
             <li id="ref-cherifi2026iso-phnn">
                 K. Cherifi et al., "Nonlinear port-hamiltonian system identification from input-state-output data (iso-phnn)," <em>Physica D: Nonlinear Phenomena</em>, 2026.
+            </li>
+            <li id="ref-elmessaoudi2026iso-phnn">
+                A. El Messaoudi et al., "Sparse symbolic identification of nonlinear port-hamiltonian systems using kolmogorov-arnold networks," <em>Under review</em>, 2026.
             </li>
         </ol>
     </main>
