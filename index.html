@@ -281,22 +281,27 @@
                         <i>Free oscillators</i>: $u_2$ acts as an energy regulator, 
                         driving the system's energy towards a reference level $H_{\text{ref}}$, compensating for both the 
                         energy dissipated during oscillations and the energy injected or extracted during the pitch-control 
-                        ramp $u_1$. Mathematically, this control is introduced as 
-                        \begin{equation}
-                            u_2(\mathbf{x},t)=\frac{\frac{1}{\tau}(H(\mathbf{x})-H_{\text{ref}})-\alpha (\nabla_pH(\mathbf{x}))^2+\nabla_dH(\mathbf{x})\cdot u_1(t)}{\nabla_pH(\mathbf{x})},
-                            \label{eq:control-volume-free-oscillations}
-                        \end{equation}
-                        The equation above can be derived from the energy balance 
+                        ramp $u_1$. It is introduced as a force, modifying the stored power 
                         \[
                             \dot{H}=\nabla_dH(\mathbf{x})\dot{d}+\nabla_qH(\mathbf{x})\dot{q}+\nabla_pH(\mathbf{x})\dot{p}
                             =\nabla_dH(\mathbf{x})\cdot u_1-\alpha (\nabla_pH(\mathbf{x}))^2-\nabla_pH(\mathbf{x})\cdot u_2,
-                        \]
+                        \]                                            
                         where $u_1$ injects/extracts power to change $d$ and there is a fixed energy dissipation due to $\alpha>0$. If we impose exponential convergence of $e=H(\mathbf{x})-H_{\text{ref}}$, so that $\dot{e}=-\frac{1}{\gamma}e$, we obtain
                         \[
                         -\frac{H(\mathbf{x})-H_{\text{ref}}}{\gamma}=\nabla_dH(\mathbf{x})\cdot u_1-\alpha (\nabla_pH(\mathbf{x}))^2+\nabla_pH(\mathbf{x})u_2,
                         \]
-                        from where \eqref{eq:control-volume-free-oscillations} can be derived.
+                        from where the expression for $u_2$
+                        \begin{equation}
+                            u_2(\mathbf{x},t)=\frac{\frac{1}{\tau}(H(\mathbf{x})-H_{\text{ref}})-\alpha (\nabla_pH(\mathbf{x}))^2+\nabla_dH(\mathbf{x})\cdot u_1(t)}{\nabla_pH(\mathbf{x})},
+                            \label{eq:control-volume-free-oscillations}
+                        \end{equation}
+                        can be derived. For stability reasons during simulation, we clamp the value of $u_2$ to be in [-3,3]. Below, we show an animation of how $u_1$ and $u_2$ change during 
+                        the simulation of a trajectory for System $\mathbb{I}$. Note that both controls are only applied when a note is changed.
                     </li>
+                    <video width="740" controls style="display: block; margin: 0 auto;">
+                        <source src="video.mp4" type="video/mp4">
+                    </video>
+                    <p></p>
                     <li>
                         <i>Self-sustained oscillators</i>: $u_2$ controls the emergence and maintenance of self-oscillations. To illustrate it, consider System $\mathbb{III}$ oscillating at a natural frequency $f_0$ with associated $d=d(f_0)$, a constant control $u_2$ 
                         and $\Gamma(\mathbf{x},\mathbf{u})=\Gamma(w)\geq0,~\forall w$, with $w=\frac{p}{L}+u_2$. 
@@ -315,7 +320,7 @@
                         \end{bmatrix}.
                         \]
                         We can now show how, for specific values of $u_2$, the system self-oscillates or not. 
-                        To do so, we apply the <i>Poincaré-Bendixson theorem</i>, which only requires the system to have a unique unstable equilibrium point in order for the dynamics to converge to a limit 
+                        To do so, we apply the <i>Poincaré-Bendixson theorem</i>&nbsp;<a href="#ref-strogatz">[3]</a>, which only requires the system to have a unique unstable equilibrium point in order for the dynamics to converge to a limit 
                         cycle. The stability of the equilibrium point depends on the determinant and trace of the Jacobian matrix evaluated at $(q^{*},p^{*})$
                         \[    
                         J_f(q^{*},p^{*})=\begin{bmatrix} 
@@ -323,7 +328,7 @@
                         -\frac{1}{C(d_0)} & -\frac{1}{L}\left(\Gamma'(u_2)u_2+\Gamma(u_2) \right)
                     \end{bmatrix}.
                         \]
-                        In order for $(q^{*},p^{*})$ to be unstable, both the determinant and trace of $J_f(q^{*},p^{*})$ must be positive. The first condition is direct as 
+                        In order for $(q^{*},p^{*})$ to be unstable, both the determinant and trace of $J_f(q^{*},p^{*})$ must be positive&nbsp;<a href="#ref-strogatz">[3]</a>. The first condition is direct as 
                         \[
                         \text{det}(J_f(q^{*},p^{*}))=\frac{1}{LC(d_0)}>0.
                         \]
@@ -337,7 +342,7 @@
                         \]
                         of constant controls $u_2$ for which self-oscillations emerge. For values outside of $\mathcal{U}_{\text{limit-cycle}}$, the equilibrium point is stable, with trajectories 
                         converging towards $(q^{*},p^{*})$. In the theory of dynamical systems, the lost of stability induced by a change in a control parameter (in our case $u_2$) is referred to 
-                        as a <i>Hopf bifurcation</i>.
+                        as a <i>Hopf bifurcation</i>&nbsp;<a href="#ref-strogatz">[3]</a>.
                     </li>
                 </ul> 
             
@@ -368,14 +373,14 @@
 
         <p>
             Let  $\Delta t=1/f_s$ and $f_s$ denote the discretization sampling rate. We avoid modeling $\dot{\mathbf{x}}$ directly, as state derivatives are typically unavailable 
-            in real-world measurements, and instead learn the discrete-time map from $\mathbf{x}_n$ to $\mathbf{x}_{n+1}$. To discretize \eqref{eq:dynamics-phnn}, we follow&nbsp;<a href="#ref-linares2026controlled">[3]</a> and use:           
+            in real-world measurements, and instead learn the discrete-time map from $\mathbf{x}_n$ to $\mathbf{x}_{n+1}$. To discretize \eqref{eq:dynamics-phnn}, we follow&nbsp;<a href="#ref-linares2026controlled">[4]</a> and use:           
             \begin{equation}
             \frac{\mathbf{x}_{n+1}-\mathbf{x}_n}{\Delta t}=(\mathbf{J}_{\theta_J}(\mathbf{x}_{n+\frac{1}{2}},\mathbf{u}_{n+\frac{1}{2}})-\mathbf{R}_{\theta_R}(\mathbf{x}_{n+\frac{1}{2}},\mathbf{u}_{n+\frac{1}{2}})\begin{bmatrix}
                     \overline{\nabla}_{\mathbf{x}}H_{\theta}(\mathbf{x}_{n+\frac{1}{2}}) \\ \mathbf{u}_{n+\frac{1}{2}},
                 \end{bmatrix},
                 \label{eq:discretization-dg}
             \end{equation}
-            where $\mathbf{x}_{n+\frac{1}{2}}=(\mathbf{x}_{n+1}+\mathbf{x}_n)/2$, $\mathbf{u}_{n+\frac{1}{2}}=(\mathbf{u}_{n+1}+\mathbf{u}_n)/2$ and $\overline{\nabla}_{\mathbf{x}}(\cdot)$ denotes the Gonzalez discrete gradient (DG)&nbsp;<a href="#ref-gonzalez1996time">[4]</a>. 
+            where $\mathbf{x}_{n+\frac{1}{2}}=(\mathbf{x}_{n+1}+\mathbf{x}_n)/2$, $\mathbf{u}_{n+\frac{1}{2}}=(\mathbf{u}_{n+1}+\mathbf{u}_n)/2$ and $\overline{\nabla}_{\mathbf{x}}(\cdot)$ denotes the Gonzalez discrete gradient (DG)&nbsp;<a href="#ref-gonzalez1996time">[5]</a>. 
             This guarantees power-balance preservation during time discretization.
         </p>
 
@@ -387,12 +392,12 @@
                 \mathcal{L}_{\text{disc}}=\|\hat{\mathbf{x}}_{n+1}-\mathbf{x}_{n+1}\|_1.
             \end{equation}
             However, since $\hat{\mathbf{x}}_{n+1}$ is obtained implicitly through the DG update, computing it during training would require solving the associated root-finding problem at every step and backpropagating 
-            through its iterations, which is very expensive. To avoid this, we exploit the inverse-explicit property&nbsp;<a href="#ref-celledoni2025inverseexplicit">[5]</a> 
+            through its iterations, which is very expensive. To avoid this, we exploit the inverse-explicit property&nbsp;<a href="#ref-celledoni2025inverseexplicit">[6]</a> 
             of the DG: since $(\mathbf{x}_n,\mathbf{x}_{n+1},\mathbf{u}_n,\mathbf{u}_{n+1})$ are known from data at training time, $\mathbf{f}_{\theta,DG}$ can be evaluated explicitly. This allows us to instead train on the residual of the discretized dynamics, 
             \begin{equation}
                 \mathcal{L}_{\text{DG}}=\left\|\frac{\mathbf{x}_{n+1}-\mathbf{x}_n}{\Delta t}-\mathbf{f}_{\theta,DG} \right\|_1
             \end{equation}
-            without requiring an iterative solver during training. The root-finding algorithm is only needed at inference time, when generating trajectories. Similarly to&nbsp;<a href="#ref-cherifi2026iso-phnn">[6]</a> , we include the output loss on the training, defining the following PHNN loss,
+            without requiring an iterative solver during training. The root-finding algorithm is only needed at inference time, when generating trajectories. Similarly to&nbsp;<a href="#ref-cherifi2026iso-phnn">[7]</a> , we include the output loss on the training, defining the following PHNN loss,
             \[\mathcal{L}_{\text{PHNN}} = \mathcal{L}_{\text{DG}}+ \left\| \mathbf{y}_{n+\frac{1}{2}} - \mathbf{y}_{\theta,n+\frac{1}{2}} \right\|_1\]
             where $\mathbf{y}_{n+\frac{1}{2}}$ and $\mathbf{y}_{\theta,n+\frac{1}{2}}$ denote the ground-truth and predicted outputs, respectively, evaluated at the midpoint.
         </p>
@@ -400,7 +405,7 @@
         <h3>Normalization</h3>
 
         <p>
-            Prior to training, we normalize the state and control variables following a similar procedure to the one described in&nbsp;<a href="#ref-elmessaoudi2026iso-phnn">[7]</a>. 
+            Prior to training, we normalize the state and control variables following a similar procedure to the one described in&nbsp;<a href="#ref-elmessaoudi2026iso-phnn">[8]</a>. 
             We define $\mathbf{D}$ and $\mathbf{S}_u$ as diagonal matrices 
             \[ 
             \mathbf{D}=\begin{bmatrix}
@@ -600,6 +605,9 @@
             </li>
             <li id="ref-van2014port">
                 A. Van Der Schaft et al., "Port-Hamiltonian systems theory: An introductive overview," <em>Foundations and Trends in Systems and Control</em>, 2014.
+            </li>
+            <li id="ref-strogatz2024">
+                S. Strogatz et al., "Nonlinear dynamics and chaos: with applications to physics, biology, chemistry and enginerring," <em>3rd Edition, CRC press</em>, 2024.
             </li>
             <li id="ref-linares2026controlled">
                 M. Linares et al., "Controlled oscillation modelling using port-Hamiltonian neural networks," <em>Physica D: Nonlinear Phenomena</em>, 2026.

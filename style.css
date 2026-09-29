@@ -149,3 +149,10 @@ img {
     margin: 0.75rem auto 0;   /* centers the caption box itself */
     max-width: 90%;           /* needed for the auto margins to have an effect */
 }
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
